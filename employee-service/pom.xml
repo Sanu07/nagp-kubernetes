@@ -68,14 +68,12 @@
 						<id>default</id>
 						<goals>
 							<goal>build</goal>
-							<goal>push</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
 					<repository>sanu07/employee-service</repository>
 					<tag>${project.version}</tag>
-					<useMavenSettingsForAuth>false</useMavenSettingsForAuth>
 				</configuration>
 				<dependencies>
 					<dependency>

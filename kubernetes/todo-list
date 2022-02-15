@@ -3,3 +3,4 @@ todo-list
 add ReadMe
 add resiliency
 create a proper secret for mysql db
+add seperate namespace

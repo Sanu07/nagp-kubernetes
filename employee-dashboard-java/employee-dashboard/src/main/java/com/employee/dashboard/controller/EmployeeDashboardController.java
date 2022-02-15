@@ -25,12 +25,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.employee.dashboard.configuration.ApplicationConfiguration;
 import com.employee.dashboard.model.Employee;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -50,6 +52,7 @@ public class EmployeeDashboardController {
 	@Autowired
 	private Environment env;
 
+	@Retry(name = "all-employees-api", fallbackMethod = "defaultResponse")
 	@GetMapping
 	public String getEmployeeData(Model model) {
 		// the URL is configured with the kubernetes service name
@@ -73,7 +76,9 @@ public class EmployeeDashboardController {
 		} catch (Exception e) {
 			log.error(
 					"[EmployeeDashboardController][getEmployeeData] error in getting response from employee-service-mysql");
-			return ERROR_PAGE;
+			model.addAttribute("error", true);
+			model.addAttribute("errorMessage", "There is some error. Please try later or contact the administrator.");
+			throw e;
 		}
 		if (!employees.isEmpty()) {
 			log.info("size of employee list is {} ", employees.size());
@@ -82,6 +87,10 @@ public class EmployeeDashboardController {
 		}
 		model.addAttribute("hostEnvVariablesMap", getHostEnvironmentVariables());
 		model.addAttribute("employeesList", employees);
+		return INDEX_PAGE;
+	}
+
+	public String defaultResponse(Throwable t) {
 		return INDEX_PAGE;
 	}
 

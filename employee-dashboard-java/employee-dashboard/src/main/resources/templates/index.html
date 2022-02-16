@@ -60,11 +60,11 @@
 					<span th:if="${#maps.isEmpty(hostEnvVariablesMap)}">configured host environment variable names do not match with
 						any actual host environment variables</span>
 				</div>
-				<div class="row">
-					<div class="col-md-5 offset-2 alert alert-primary" th:if="${#maps.containsKey(hostEnvVariablesMap, 'HOSTNAME')}">
+				<div class="row justify-content-around">
+					<div class="col-md-5 alert alert-primary" th:if="${#maps.containsKey(hostEnvVariablesMap, 'HOSTNAME')}">
 						POD name: <b><span th:text="${hostEnvVariablesMap['HOSTNAME']}"></span></b>
 					</div>
-					<div class="col-md-5 offset-2 alert alert-primary" th:if="${#maps.containsKey(hostEnvVariablesMap, 'EMPLOYEE_SERVICE_URI')}">
+					<div class="col-md-5 alert alert-primary" th:if="${#maps.containsKey(hostEnvVariablesMap, 'EMPLOYEE_SERVICE_URI')}">
 						ui communicates with backend using service names(Cluster DNS): <b><span th:text="${hostEnvVariablesMap['EMPLOYEE_SERVICE_URI']}"></span></b>
 					</div>
 				</div>

@@ -35,4 +35,9 @@ public class EmployeeController {
 		}
 		return ResponseEntity.ok(employeesList);
 	}
+	
+	@GetMapping("/health")
+	public String imHealthy() {
+		return "{healthy: true}";
+	}
 }

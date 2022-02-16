@@ -1,6 +1,7 @@
 package com.employee.dashboard.configuration;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -16,14 +17,17 @@ import lombok.Setter;
 @Setter
 public class ApplicationConfiguration {
 
-	@Value("${employee.service.base.url}")
+	@Value("${EMPLOYEE_SERVICE_URI:http://localhost}")
 	private String employeeServiceBaseUrl;
 
-	@Value("${employee.service.port}")
+	@Value("${employee.service.port:9000}")
 	private String employeeServicePort;
 
 	@Value("${restTemplate.connectionTimeout}")
 	private Integer restConnectionTimeout;
+	
+	@Value("${kubernetes.host.envVariables}")
+	private List<String> kubeHostEnvVariables;
 
 	@Bean
 	public RestTemplate restTemplate() {

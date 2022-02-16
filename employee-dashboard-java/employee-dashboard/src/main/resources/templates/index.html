@@ -57,7 +57,7 @@
 			</div>
 			<div class="card-body">
 				<div class="row">
-					<div class="col-3" th:each="entry: ${hostEnvVariablesMap}">
+					<div class="col-md-4 offset-1 alert alert-primary" th:each="entry: ${hostEnvVariablesMap}">
 						<span th:text="${entry.key}"></span>: <span th:text="${entry.value}"></span>
 					</div>
 				</div>

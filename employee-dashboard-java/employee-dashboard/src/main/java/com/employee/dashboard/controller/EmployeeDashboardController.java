@@ -25,7 +25,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.employee.dashboard.configuration.ApplicationConfiguration;
 import com.employee.dashboard.model.Employee;
@@ -52,7 +51,7 @@ public class EmployeeDashboardController {
 	@Autowired
 	private Environment env;
 
-	@Retry(name = "all-employees-api", fallbackMethod = "defaultResponse")
+	@Retry(name = "all-employees-api", fallbackMethod = "defaultResponseFB")
 	@GetMapping
 	public String getEmployeeData(Model model) {
 		// the URL is configured with the kubernetes service name
@@ -90,7 +89,8 @@ public class EmployeeDashboardController {
 		return INDEX_PAGE;
 	}
 
-	public String defaultResponse(Throwable t) {
+	public String defaultResponseFB(Throwable t) {
+		log.error("[EmployeeDashboardController][defaultResponseFB] Could not get response even after retrying ", t);
 		return INDEX_PAGE;
 	}
 
@@ -109,7 +109,9 @@ public class EmployeeDashboardController {
 					Object resolved = env.getProperty(prop, Object.class);
 					if (resolved instanceof String) {
 						log.info("{} - {}", prop, env.getProperty(prop));
-						map.put(prop, env.getProperty(prop));
+						if (config.getKubeHostEnvVariables().contains(prop)) {
+							map.put(prop, env.getProperty(prop));
+						}
 					} else {
 						log.info("{} - {}", prop, "NON-STRING-VALUE");
 					}

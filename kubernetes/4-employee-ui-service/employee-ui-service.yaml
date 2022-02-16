@@ -13,4 +13,4 @@ spec:
   selector:
     app: employee-ui-service
     version: v1
-  type: LoadBalancer
+  type: LoadBalancer #use loadbalancer so that it can be accessed from outside the cluster

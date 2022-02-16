@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: employee-backend-service
-  namespace: nagp-k8s
+  namespace: nagp-k8s # to deploy all service related to nagp assignment in a seperate namespace
 spec:
   selector:
     matchLabels:
@@ -50,7 +50,7 @@ spec:
           ports:
           - name: backend-service-port
             containerPort: 8000
-          resources:
+          resources: #configure for optimum use of resources
             requests:
               cpu: 100m
               memory: 512Mi
@@ -59,17 +59,17 @@ spec:
               memory: 1024Mi
           readinessProbe:
             httpGet:
-              path: /employees/health
+              path: /employees/health #readinessProbe will confirm the health of the service before starting accepting any request
               port: backend-service-port
             failureThreshold: 5
             periodSeconds: 10
             initialDelaySeconds: 60
           livenessProbe:
             httpGet:
-              path: /employees/health
+              path: /employees/health #livenessProbe will confirm app is up and running
               port: backend-service-port
             failureThreshold: 5
             periodSeconds: 10
             initialDelaySeconds: 60
         restartPolicy: Always
-        terminationGracePeriodSeconds: 30
+        terminationGracePeriodSeconds: 30 #helps in graceful termination

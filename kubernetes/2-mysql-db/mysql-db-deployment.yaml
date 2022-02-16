@@ -49,6 +49,6 @@ spec:
         - name: mysql-persistent-storage # Obtaining 'vloume' from PVC
           persistentVolumeClaim:
             claimName: mysql-pv-claim
-        - name: mysql-initdb
+        - name: mysql-initdb #helps in initializing data
           configMap:
             name: db-config
